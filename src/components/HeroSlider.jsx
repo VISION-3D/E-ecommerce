@@ -1,0 +1,158 @@
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const HeroSlider = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      id: 1,
+      image: "/assets/images/heros9.jpg",
+      title: "Découvrez la Puissance de l'Aloe Vera",
+      subtitle: "Des produits naturels pour votre santé et bien-être",
+      price: "à partir de 15 000 FCFA",
+      buttonText: "Acheter Maintenant",
+      link: "/catalogue"
+    },
+    {
+      id: 2,
+      image: "/assets/images/heros10.jpg", 
+      title: "Promotion Spéciale",
+      subtitle: "Jusqu'à 25% de réduction sur les compléments",
+      buttonText: "Profiter des Promotions",
+      link: "/catalogue?promo=true"
+    },
+    {
+      id: 3,
+      image: "/assets/images/heros11.jpg", 
+      title: "Nouvelle Collection Forever",
+      subtitle: "Des compléments alimentaires innovants",
+      buttonText: "Découvrir",
+      link: "/catalogue"
+    }
+  ];
+
+  // Auto-play du slider
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  // Fallback images si les images locales ne chargent pas
+  const getFallbackImage = (slideIndex) => {
+  const fallbackImages = [
+  "/assets/images/heros9.jpg",
+  "/assets/images/heros10.jpg", // Même image pour les 3 slides
+  "/assets/images/heros11.jpg"
+];
+    return fallbackImages[slideIndex];
+  };
+
+  return (
+    <div className="wrap-main-slide mb-8 relative">
+      <div className="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-xl shadow-xl">
+        {/* Image de fond unique */}
+        <div className="absolute inset-0">
+          <img
+            src={slides[currentSlide].image}
+            alt={slides[currentSlide].title}
+            className="w-full h-full object-cover transition-all duration-1000 ease-in-out"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = getFallbackImage(currentSlide);
+            }}
+          />
+        </div>
+
+        {/* Contenu du slide actuel */}
+        <div className="absolute inset-0 flex items-center transition-opacity duration-500">
+          <div className="container mx-auto px-4">
+            <div className={`max-w-2xl ${currentSlide === 1 ? 'text-center mx-auto' : ''}`}>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                {slides[currentSlide].title}
+              </h2>
+              
+              <span className="block text-lg md:text-xl lg:text-2xl text-white/90 mb-6">
+                {slides[currentSlide].subtitle}
+              </span>
+              
+              {currentSlide === 1 && (
+                <div className="mb-6">
+                  <p className="text-xl lg:text-2xl text-aloe-gold font-bold bg-white/20 inline-block px-4 py-2 rounded-lg">
+                    CODE : VITALITE2026
+                  </p>
+                </div>
+              )}  
+              {(currentSlide === 0 || currentSlide === 2) && (
+                <p className="text-xl lg:text-2xl text-white mb-8">
+                  Prix: <span className="text-2xl lg:text-4xl font-bold text-aloe-gold ml-2">
+                    {currentSlide === 0 ? "à partir de 15 000 FCFA" : "Dès 13 500 FCFA"}
+                  </span>
+                </p>
+              )}
+              
+              <Link
+                to={slides[currentSlide].link}
+                className={`inline-block px-6 py-3 md:px-8 md:py-4 rounded-lg font-bold text-lg text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 ${
+                  currentSlide === 0 
+                    ? 'bg-aloe-green hover:bg-aloe-green-dark' 
+                    : currentSlide === 1
+                    ? 'bg-purple-600 hover:bg-purple-700'
+                    : 'bg-blue-600 hover:bg-blue-700'
+                }`}
+              >
+                {slides[currentSlide].buttonText}
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Boutons de navigation */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-all duration-300 backdrop-blur-sm"
+          aria-label="Slide précédent"
+        >
+          <ChevronLeft size={24} />
+        </button>
+        
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-all duration-300 backdrop-blur-sm"
+          aria-label="Slide suivant"
+        >
+          <ChevronRight size={24} />
+        </button>
+
+        {/* Indicateurs de slide */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide 
+                  ? 'bg-white w-8' 
+                  : 'bg-white/50 hover:bg-white/70'
+              }`}
+              aria-label={`Aller au slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HeroSlider;
