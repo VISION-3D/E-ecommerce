@@ -16,13 +16,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/",
-      "headers": {
-        "Cache-Control": "s-maxage=31536000, immutable"
-      }
+      "dest": "/index.html"
     }
-  ],
-  "env": {
-    "CI": "false"
-  }
+  ]
 }
