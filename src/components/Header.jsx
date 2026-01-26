@@ -36,7 +36,7 @@ const Header = () => {
         {/* LOGO */}
         <Link to="/" className="flex items-center space-x-3 group">
           <img
-            src="/logo1.png"
+            src="/favicon.ico"
             alt="Vitalité & Bien-être"
             className="h-14 sm:h-16 md:h-20 w-auto animate-float transition-transform duration-500 hover:scale-110"
           />
