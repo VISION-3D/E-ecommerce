@@ -1,6 +1,6 @@
 {
-  "short_name": "Forever Shop",
-  "name": "Forever Living Sénégal",
+  "name": "Viatlite Bien-être",
+  "short_name": "Viatlite",
   "icons": [
     {
       "src": "/favicon.ico",
@@ -8,8 +8,8 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#2E7D32",
+  "theme_color": "#2ecc71",
   "background_color": "#ffffff"
 }
