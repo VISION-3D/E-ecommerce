@@ -1,24 +1,9 @@
 {
-  "version": 2,
-  "builds": [
+  "framework": "create-react-app",
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ],
-  "build": {
-    "env": {
-      "CI": "false",
-      "NODE_ENV": "production"
-    }
-  }
+  ]
 }
